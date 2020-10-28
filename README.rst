@@ -50,15 +50,15 @@ These graphs can be part of your web application:
 
 Want to try it yourself? Install python-nvd3, enter your python shell and try this quick demo::
 
-    >>> from nvd3 import pieChart
-    >>> type = 'pieChart'
-    >>> chart = pieChart(name=type, color_category='category20c', height=450, width=450)
-    >>> xdata = ["Orange", "Banana", "Pear", "Kiwi", "Apple", "Strawberry", "Pineapple"]
-    >>> ydata = [3, 4, 0, 1, 5, 7, 3]
-    >>> extra_serie = {"tooltip": {"y_start": "", "y_end": " cal"}}
-    >>> chart.add_serie(y=ydata, x=xdata, extra=extra_serie)
-    >>> chart.buildcontent()
-    >>> print chart.htmlcontent
+    from nvd3 import pieChart
+    type = 'pieChart'
+    chart = pieChart(name=type, color_category='category20c', height=450, width=450)
+    xdata = ["Orange", "Banana", "Pear", "Kiwi", "Apple", "Strawberry", "Pineapple"]
+    ydata = [3, 4, 0, 1, 5, 7, 3]
+    extra_serie = {"tooltip": {"y_start": "", "y_end": " cal"}}
+    chart.add_serie(y=ydata, x=xdata, extra=extra_serie)
+    chart.buildcontent()
+    print(chart.htmlcontent)
 
 
 This will output the following HTML to render a live chart. The HTML could be
@@ -78,12 +78,15 @@ stored into a HTML file, used in a Web application, or even used via Ipython Not
         var chart = nv.models.pieChart();
         chart.margin({top: 30, right: 60, bottom: 20, left: 60});
         var datum = data_pieChart[0].values;
-                chart.tooltipContent(function(key, y, e, graph) {
-                    var x = String(key);
-                    var y =  String(y)  + ' cal';
-                    tooltip_str = '<center><b>'+x+'</b></center>' + y;
-                    return tooltip_str;
-                });
+         chart.tooltip.contentGenerator(function(d, elem) {
+          var x = String(d.data.label);
+          var y = String(d.data.value);
+              var y =  String(y)  + ' cal';
+
+              tooltip_str = '<center><b>'+x+'</b></center>' + y;
+              return tooltip_str;
+              });
+
             chart.showLegend(true);
             chart.showLabels(true);
             chart.donut(false);
